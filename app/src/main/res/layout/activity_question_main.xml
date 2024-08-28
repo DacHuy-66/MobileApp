@@ -68,9 +68,9 @@
             android:gravity="center"
             android:paddingTop="40dp"
             android:paddingBottom="40dp"
-            android:text="@string/content_question_1"
             android:textColor="#EDEDED"
-            android:textSize="20sp"></TextView>
+            android:textSize="30sp">
+        </TextView>
 
         <TextView
             android:id="@+id/textView2"
@@ -125,8 +125,8 @@
         android:layout_height="50dp"
         android:background="@drawable/txt_answer_edit"
         android:gravity="center"
-        android:text="Answer 1"
         android:textColor="#FFFFFF"
+        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/tv_answer2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -140,8 +140,8 @@
         android:layout_height="50dp"
         android:background="@drawable/txt_answer_edit"
         android:gravity="center"
-        android:text="Answer 2"
         android:textColor="#FFFFFF"
+        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/tv_answer3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -155,7 +155,7 @@
         android:layout_height="50dp"
         android:background="@drawable/txt_answer_edit"
         android:gravity="center"
-        android:text="Answer 3"
+        android:textSize="24sp"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/tv_answer4"
         app:layout_constraintEnd_toEndOf="parent"
@@ -170,8 +170,8 @@
         android:layout_height="50dp"
         android:background="@drawable/txt_answer_edit"
         android:gravity="center"
-        android:text="Answer 4"
         android:textColor="#FFFFFF"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

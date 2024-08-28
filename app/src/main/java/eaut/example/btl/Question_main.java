@@ -1,5 +1,7 @@
 package eaut.example.btl;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,23 +22,24 @@ public class Question_main extends AppCompatActivity {
     Button btn_back1;
     TextView tvQuestionNumber, tvQuestion, tvAnswer1, tvAnswer2, tvAnswer3, tvAnswer4;
     int currentQuestion = 0;
+    int score = 0;
 
     // Câu hỏi và đáp án
     String[] questions = {
-            "Câu hỏi 1: cái j tốt nhất?",
-            "Câu hỏi 2: Đáp án nào là đúng?",
-            "Câu hỏi 3: Đáp án nào là Sai?"
+            "Cái gì tốt nhất?",
+            "Đáp án nào là đúng?",
+            "Đáp án nào là Sai?"
     };
 
     String[][] answers = {
             {"chân", "tất", "Tiền", "Đồ ăn"},
-            {"Đáp án A", "Đáp án B", "Đáp án C", "Đáp án D"},
-            {"Đáp án X", "Đáp án Y", "Đáp án Z", "Đáp án W"}
+            {"Đúng", "Sai", "Sai", "Sai"},
+            {"Sai", "Sai", "Sai", "Đúng"}
     };
 
-    int[] correctAnswers = {2, 0, 3};  // Chỉ mục của đáp án đúng
+    int[] correctAnswers = {2, 0, 3};
 
-    // Drawable resources for answer backgrounds
+    Drawable blueDrawable;
     Drawable yellowDrawable;
     Drawable greenDrawable;
     Drawable redDrawable;
@@ -58,14 +61,15 @@ public class Question_main extends AppCompatActivity {
 
         // Ánh xạ các TextView
         tvQuestion = findViewById(R.id.tv_content_question);
-        tvQuestionNumber = findViewById(R.id.tv_question_number);  // Ánh xạ TextView hiển thị số câu hỏi
+        tvQuestionNumber = findViewById(R.id.tv_question_number);
         tvAnswer1 = findViewById(R.id.tv_answer1);
         tvAnswer2 = findViewById(R.id.tv_answer2);
         tvAnswer3 = findViewById(R.id.tv_answer3);
         tvAnswer4 = findViewById(R.id.tv_answer4);
 
         // Lấy các drawable resource
-        yellowDrawable = ContextCompat.getDrawable(this, R.drawable.txt_answer_edit);
+        yellowDrawable = ContextCompat.getDrawable(this, R.drawable.bg_yellow);
+        blueDrawable = ContextCompat.getDrawable(this, R.drawable.txt_answer_edit);
         greenDrawable = ContextCompat.getDrawable(this, R.drawable.bg_green);
         redDrawable = ContextCompat.getDrawable(this, R.drawable.bg_red);
 
@@ -79,72 +83,85 @@ public class Question_main extends AppCompatActivity {
         tvAnswer4.setOnClickListener(view -> checkAnswer(3, tvAnswer4));
     }
 
+    @SuppressLint("SetTextI18n")
     private void loadQuestion(int questionIndex) {
         // Cập nhật câu hỏi và đáp án
         tvQuestion.setText(questions[questionIndex]);
-        tvQuestionNumber.setText("Câu hỏi " + (questionIndex + 1));  // Hiển thị số thứ tự của câu hỏi
+        tvQuestionNumber.setText("Câu hỏi " + (questionIndex + 1));
         tvAnswer1.setText(answers[questionIndex][0]);
         tvAnswer2.setText(answers[questionIndex][1]);
         tvAnswer3.setText(answers[questionIndex][2]);
         tvAnswer4.setText(answers[questionIndex][3]);
 
         // Đặt nền cho các đáp án
-        tvAnswer1.setBackground(yellowDrawable);
-        tvAnswer2.setBackground(yellowDrawable);
-        tvAnswer3.setBackground(yellowDrawable);
-        tvAnswer4.setBackground(yellowDrawable);
+        tvAnswer1.setBackground(blueDrawable);
+        tvAnswer2.setBackground(blueDrawable);
+        tvAnswer3.setBackground(blueDrawable);
+        tvAnswer4.setBackground(blueDrawable);
     }
 
     private void checkAnswer(int selectedAnswerIndex, TextView selectedAnswer) {
-
-        // Chuyển màu đáp án đã chọn thành màu vàng
+        // Đổi màu đáp án đã chọn thành màu vàng ngay khi người dùng chọn
         selectedAnswer.setBackground(yellowDrawable);
 
-        // Đổi màu của tất cả các đáp án sau khi chọn
-        TextView[] allAnswers = {tvAnswer1, tvAnswer2, tvAnswer3, tvAnswer4};
-        boolean isCorrect = (selectedAnswerIndex == correctAnswers[currentQuestion]);
+        // Sử dụng Handler để trì hoãn kiểm tra đáp án sau 2 giây
+        new Handler().postDelayed(() -> {
+            // Đổi màu của tất cả các đáp án sau khi đã đợi 2 giây
+            TextView[] allAnswers = {tvAnswer1, tvAnswer2, tvAnswer3, tvAnswer4};
+            boolean isCorrect = (selectedAnswerIndex == correctAnswers[currentQuestion]);
 
-        if (isCorrect) {
-            // Đáp án đúng
-            selectedAnswer.setBackground(greenDrawable);  // Đổi màu thành xanh nếu đúng
+            if (isCorrect) {
+                // Đáp án đúng
+                selectedAnswer.setBackground(greenDrawable);  // Đổi màu thành xanh nếu đúng
+                score++;  // Tăng điểm số
 
-            // Hiển thị đáp án đúng bằng cách đổi màu nền của đáp án đúng thành màu xanh
-            for (int i = 0; i < allAnswers.length; i++) {
-                if (i == correctAnswers[currentQuestion]) {
-                    allAnswers[i].setBackground(greenDrawable);
-                } else {
-                    allAnswers[i].setBackground(redDrawable);  // Đổi màu đáp án sai thành đỏ
+                // Hiển thị đáp án đúng bằng cách đổi màu nền của đáp án đúng thành màu xanh
+                for (int i = 0; i < allAnswers.length; i++) {
+                    if (i == correctAnswers[currentQuestion]) {
+                        allAnswers[i].setBackground(greenDrawable);
+                    } else {
+                        allAnswers[i].setBackground(redDrawable);  // Đổi màu đáp án sai thành đỏ
+                    }
                 }
+
+                // Trì hoãn 1 giây trước khi chuyển sang câu hỏi tiếp theo nếu đúng
+                new Handler().postDelayed(() -> {
+                    if (currentQuestion < questions.length - 1) {
+                        currentQuestion++;
+                        loadQuestion(currentQuestion);
+                    } else {
+                        // Chuyển sang màn hình Score
+                        navigateToScore();
+                    }
+                }, 1000);  // Trì hoãn 1 giây
+
+            } else {
+                selectedAnswer.setBackground(redDrawable);
+                // Hiển thị đáp án đúng bằng cách đổi màu nền của đáp án đúng thành màu xanh
+                for (int i = 0; i < allAnswers.length; i++) {
+                    if (i == correctAnswers[currentQuestion]) {
+                        allAnswers[i].setBackground(greenDrawable);
+                    }
+                }
+
+                // Trì hoãn 1 giây rồi kết thúc trò chơi
+                new Handler().postDelayed(() -> {
+                    navigateToScore();
+                    Toast.makeText(this, "Sai rồi! Trò chơi kết thúc.", Toast.LENGTH_SHORT).show();
+                    finish();
+                }, 1000);
             }
-
-            // Trì hoãn 1 giây trước khi chuyển sang câu hỏi tiếp theo nếu đúng
-            new Handler().postDelayed(() -> {
-                if (currentQuestion < questions.length - 1) {
-                    currentQuestion++;
-                    loadQuestion(currentQuestion);
-                } else {
-                    Toast.makeText(this, "Bạn đã hoàn thành tất cả câu hỏi!", Toast.LENGTH_SHORT).show();
-                    finish();  // Kết thúc nếu hoàn thành tất cả câu hỏi
-                }
-            }, 1000);  // Trì hoãn 1 giây
-
-        } else {
-            // Đáp án sai
-            // Đổi màu nền của đáp án đã chọn thành đỏ
-            selectedAnswer.setBackground(redDrawable);
-
-            // Đổi màu đáp án đúng thành màu xanh
-            for (int i = 0; i < allAnswers.length; i++) {
-                if (i == correctAnswers[currentQuestion]) {
-                    allAnswers[i].setBackground(greenDrawable);
-                }
-            }
-
-            // Trì hoãn 1 giây rồi kết thúc activity
-            new Handler().postDelayed(() -> {
-                Toast.makeText(this, "Đáp án sai! Trò chơi kết thúc.", Toast.LENGTH_SHORT).show();
-                finish();  // Kết thúc sau 1 giây
-            }, 1000);  // Trì hoãn 1 giây
-        }
+        }, 1000);  // Trì hoãn 1 giây trước khi kiểm tra đáp án
     }
+
+
+    // Chuyển sang màn hình Score (Final Score Activity)
+    private void navigateToScore() {
+        Intent intent = new Intent(Question_main.this, final_Score.class);
+        intent.putExtra("SCORE", score);
+        intent.putExtra("TOTAL_QUESTIONS", questions.length);
+        startActivity(intent);
+        finish();
+    }
+
 }

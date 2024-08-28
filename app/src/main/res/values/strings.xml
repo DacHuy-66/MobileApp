@@ -5,5 +5,6 @@
     <string name="content_question_1">Content Question 1</string>
     <string name="question">Question</string>
     <string name="score">Bảng điểm</string>
+    <string name="choilai">Chơi lại</string>
 
 </resources>

@@ -104,6 +104,12 @@ public class Question_main extends AppCompatActivity {
         // Đổi màu đáp án đã chọn thành màu vàng ngay khi người dùng chọn
         selectedAnswer.setBackground(yellowDrawable);
 
+        // Vô hiệu hóa sự kiện click cho tất cả các đáp án
+        tvAnswer1.setEnabled(false);
+        tvAnswer2.setEnabled(false);
+        tvAnswer3.setEnabled(false);
+        tvAnswer4.setEnabled(false);
+
         // Sử dụng Handler để trì hoãn kiểm tra đáp án sau 2 giây
         new Handler().postDelayed(() -> {
             // Đổi màu của tất cả các đáp án sau khi đã đợi 2 giây
@@ -129,6 +135,8 @@ public class Question_main extends AppCompatActivity {
                     if (currentQuestion < questions.length - 1) {
                         currentQuestion++;
                         loadQuestion(currentQuestion);
+                        // Kích hoạt lại sự kiện click sau khi chuyển sang câu hỏi tiếp theo
+                        enableAnswerClick();
                     } else {
                         // Chuyển sang màn hình Score
                         navigateToScore();
@@ -154,6 +162,15 @@ public class Question_main extends AppCompatActivity {
         }, 1000);  // Trì hoãn 1 giây trước khi kiểm tra đáp án
     }
 
+    // Phương thức kích hoạt lại sự kiện click cho các đáp án
+    private void enableAnswerClick() {
+        tvAnswer1.setEnabled(true);
+        tvAnswer2.setEnabled(true);
+        tvAnswer3.setEnabled(true);
+        tvAnswer4.setEnabled(true);
+    }
+
+
 
     // Chuyển sang màn hình Score (Final Score Activity)
     private void navigateToScore() {
@@ -163,5 +180,4 @@ public class Question_main extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
 }

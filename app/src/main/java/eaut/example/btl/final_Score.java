@@ -36,7 +36,7 @@ public class final_Score extends AppCompatActivity {
         tvEndMessage = findViewById(R.id.tv_end);
         tvEndScore = findViewById(R.id.tv_end_score);
         btnPlayAgain = findViewById(R.id.btn_playagain);
-        btnBack = findViewById(R.id.btn_back2);
+        btnBack = findViewById(R.id.btn_back);
 
         // Nhận điểm từ Question_main activity
         Intent intent = getIntent();

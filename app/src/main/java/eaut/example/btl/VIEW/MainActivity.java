@@ -1,5 +1,6 @@
-package eaut.example.btl;
+package eaut.example.btl.VIEW;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,25 +11,41 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class Huong_dan extends AppCompatActivity {
+import eaut.example.btl.R;
 
-    Button btn_back2;
+public class MainActivity extends AppCompatActivity {
+
+
+    Button btn_play;
+    Button btn_huongdan;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_huong_dan);
+        setContentView(R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        btn_back2 = findViewById(R.id.btn_back2);
-        btn_back2.setOnClickListener(new View.OnClickListener() {
+        btn_play = findViewById(R.id.btn_play);
+        btn_play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                Intent myIntent = new Intent(MainActivity.this, Score.class);
+                startActivity(myIntent);
+            }
+        });
+
+        btn_huongdan = findViewById(R.id.btn_huongdan);
+        btn_huongdan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(MainActivity.this, Huong_dan.class);
+                startActivity(myIntent);
             }
         });
     }

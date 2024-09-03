@@ -6,12 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_main"
-    tools:context=".Huong_dan">
+    tools:context=".VIEW.Huong_dan">
 
     <Button
         android:id="@+id/btn_back2"
-        android:layout_width="70dp"
-        android:layout_height="24dp"
+        android:layout_width="65dp"
+        android:layout_height="48dp"
         android:background="@drawable/back_edit"
         app:backgroundTint="@null"
         app:icon="@drawable/baseline_arrow_back_ios_new_24"
@@ -27,7 +27,7 @@
         android:id="@+id/textView4"
         android:layout_width="189dp"
         android:layout_height="38dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="70dp"
         android:text="HƯỚNG DẪN"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
@@ -42,13 +42,14 @@
         android:id="@+id/linearLayout2"
         android:layout_width="360dp"
         android:layout_height="130dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.120000005">
+        app:layout_constraintVertical_bias="0.219">
 
         <TextView
             android:id="@+id/textView3"

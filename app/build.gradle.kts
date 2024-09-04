@@ -10,8 +10,8 @@ android {
         applicationId = "eaut.example.btl"
         minSdk = 29
         targetSdk = 34
-        versionCode = 3
-        versionName = "1.1"
+        versionCode = 4
+        versionName = "1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

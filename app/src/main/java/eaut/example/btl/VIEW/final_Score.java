@@ -51,7 +51,7 @@ public class final_Score extends AppCompatActivity {
         btnPlayAgain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent replayIntent = new Intent(final_Score.this, Score.class);
+                Intent replayIntent = new Intent(final_Score.this, Lever.class);
                 startActivity(replayIntent);
                 finish();
             }

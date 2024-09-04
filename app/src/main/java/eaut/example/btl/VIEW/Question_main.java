@@ -30,6 +30,7 @@ public class Question_main extends AppCompatActivity {
     int score = 0;
     List<Question> questionList;
     QuizDbHelper dbHelper;
+    int difficultyLevel;
 
     Drawable blueDrawable;
     Drawable yellowDrawable;
@@ -65,15 +66,20 @@ public class Question_main extends AppCompatActivity {
         greenDrawable = ContextCompat.getDrawable(this, R.drawable.bg_green);
         redDrawable = ContextCompat.getDrawable(this, R.drawable.bg_red);
 
-        // Khởi tạo QuizDbHelper và lấy câu hỏi từ cơ sở dữ liệu
+        // Khởi tạo QuizDbHelper
         dbHelper = new QuizDbHelper(this);
-        questionList = dbHelper.getAllQuestions();
+
+        // Lấy mức độ câu hỏi từ Intent
+        difficultyLevel = getIntent().getIntExtra("DIFFICULTY_LEVEL", 1);  // Mặc định là mức độ dễ
+
+        // Lấy câu hỏi theo mức độ từ cơ sở dữ liệu
+        questionList = dbHelper.getQuestionsByLevel(difficultyLevel);
 
         // Hiển thị câu hỏi đầu tiên
         if (!questionList.isEmpty()) {
             loadQuestion(currentQuestion);
         } else {
-            Toast.makeText(this, "Không có câu hỏi trong cơ sở dữ liệu!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Không có câu hỏi cho mức độ này!", Toast.LENGTH_SHORT).show();
         }
 
         // Gán sự kiện khi người dùng chọn đáp án

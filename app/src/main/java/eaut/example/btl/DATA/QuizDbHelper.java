@@ -7,12 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class QuizDbHelper extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "quiz.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final String DATABASE_NAME = "QT.db";
+    private static final int DATABASE_VERSION = 1;
 
     public QuizDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -99,5 +100,40 @@ public class QuizDbHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         return questions;
+    }
+    // Phương thức để lấy câu hỏi ngẫu nhiên theo mức độ
+    @SuppressLint("Range")
+    public List<Question> getRandomQuestionsByLevel(int level) {
+        List<Question> allQuestions = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection = QuizContract.QuestionTable.COLUMN_LEVEL + " = ?";
+        String[] selectionArgs = { String.valueOf(level) };
+        Cursor cursor = db.query(
+                QuizContract.QuestionTable.TABLE_NAME,
+                null, // Select all columns
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        if (cursor.moveToFirst()) {
+            do {
+                String questionText = cursor.getString(cursor.getColumnIndex(QuizContract.QuestionTable.COLUMN_QUESTION));
+                String option1 = cursor.getString(cursor.getColumnIndex(QuizContract.QuestionTable.COLUMN_OPTION1));
+                String option2 = cursor.getString(cursor.getColumnIndex(QuizContract.QuestionTable.COLUMN_OPTION2));
+                String option3 = cursor.getString(cursor.getColumnIndex(QuizContract.QuestionTable.COLUMN_OPTION3));
+                String option4 = cursor.getString(cursor.getColumnIndex(QuizContract.QuestionTable.COLUMN_OPTION4));
+                int answerNr = cursor.getInt(cursor.getColumnIndex(QuizContract.QuestionTable.COLUMN_ANSWER_NR));
+                allQuestions.add(new Question(questionText, option1, option2, option3, option4, answerNr));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        // Trộn ngẫu nhiên danh sách câu hỏi
+        Collections.shuffle(allQuestions);
+
+        return allQuestions;
     }
 }

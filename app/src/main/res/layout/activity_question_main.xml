@@ -76,11 +76,12 @@
             android:textSize="30sp" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/txt_countdown"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:background="@drawable/txt_edit"
+            android:text="@string/_00_00"
             android:gravity="center"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"

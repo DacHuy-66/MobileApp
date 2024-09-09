@@ -10,5 +10,8 @@
     <string name="de">Dễ</string>
     <string name="trung_b_nh">Trung Bình</string>
     <string name="kh">Khó</string>
+    <string name="batdau">Bắt Đầu</string>
+    <string name="batdausau">Bắt đầu sau:</string>
+    <string name="_00_00">00:00</string>
 
 </resources>

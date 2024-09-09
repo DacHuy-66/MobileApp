@@ -65,6 +65,7 @@ public class DatabaseInitializer {
         addQuestionsToDatabase(db, hardQuestions, hardAnswers, hardCorrectAnswers, 3);
     }
 
+
     // Phương thức để thêm câu hỏi vào cơ sở dữ liệu
     private static void addQuestionsToDatabase(SQLiteDatabase db, String[] questions, String[][] answers, int[] correctAnswers, int level) {
         for (int i = 0; i < questions.length; i++) {

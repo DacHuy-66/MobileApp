@@ -2,7 +2,8 @@ package eaut.example.btl.VIEW;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.CountDownTimer;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -14,26 +15,34 @@ import androidx.core.view.WindowInsetsCompat;
 import eaut.example.btl.R;
 
 public class Score extends AppCompatActivity {
+
+    private TextView countdownText;
+    private Button btnStart;
+    private CountDownTimer countDownTimer;
+    private boolean isCountdownFinished = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_score);
 
-        // Get the question number passed from Question_main
-        int currentQuestion = getIntent().getIntExtra("QUESTION_NUMBER", 0);
+        // Nhận mức độ khó được chuyển từ Lever
+        int difficultyLevel = getIntent().getIntExtra("DIFFICULTY_LEVEL", 1);
 
-        // Highlight the corresponding score TextView
-        highlightScore(currentQuestion);
+        countdownText = findViewById(R.id.textView12);
+        btnStart = findViewById(R.id.btn_tieptuc);
 
-        // Delay for 3 seconds before transitioning to Question_main
-        new Handler().postDelayed(() -> {
-            Intent intent = new Intent(Score.this, Question_main.class);
-            // Pass the question number back to Question_main
-            intent.putExtra("QUESTION_NUMBER", currentQuestion);
-            startActivity(intent);
-            finish();
-        }, 2000);
+        // Xử lý sự kiện nhấn nút "Bắt đầu luôn"
+        btnStart.setOnClickListener(view -> {
+            if (countDownTimer != null) {
+                countDownTimer.cancel();
+            }
+            navigateToQuestionMain(difficultyLevel);
+        });
+
+        // Bắt đầu đếm ngược trước khi điều hướng đến Question_main
+        startCountdownTimer(difficultyLevel);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -42,19 +51,28 @@ public class Score extends AppCompatActivity {
         });
     }
 
-    private void highlightScore(int questionNumber) {
-        // Array of TextView IDs for the score levels
-        int[] scoreTextViewIds = {
-                R.id.bac10, R.id.bac9, R.id.bac8, R.id.bac7, R.id.bac6,
-                R.id.bac5, R.id.bac4, R.id.bac3, R.id.bac2, R.id.bac1
-        };
+    private void startCountdownTimer(int difficultyLevel) {
+        // Tạo đồng hồ đếm ngược trong 10 giây
+        countDownTimer = new CountDownTimer(10000, 1000) {
 
-        // Ensure questionNumber is within valid range
-        if (questionNumber >= 0 && questionNumber < scoreTextViewIds.length) {
-            // Get the corresponding TextView
-            TextView scoreTextView = findViewById(scoreTextViewIds[questionNumber]);
-            scoreTextView.setBackgroundResource(R.drawable.txt_answer_edit_yellow);
+            public void onTick(long millisUntilFinished) {
+                countdownText.setText("Bắt đầu sau " + millisUntilFinished / 1000 + " giây");
+            }
 
-        }
+            public void onFinish() {
+                if (!isCountdownFinished) {
+                    navigateToQuestionMain(difficultyLevel);
+                }
+            }
+
+        }.start();
+    }
+
+    private void navigateToQuestionMain(int difficultyLevel) {
+        isCountdownFinished = true;
+        Intent intent = new Intent(Score.this, Question_main.class);
+        intent.putExtra("DIFFICULTY_LEVEL", difficultyLevel);
+        startActivity(intent);
+        finish();
     }
 }

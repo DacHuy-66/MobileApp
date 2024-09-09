@@ -22,6 +22,8 @@ import eaut.example.btl.DATA.QuizDbHelper;
 import eaut.example.btl.DATA.Question;
 import eaut.example.btl.R;
 
+import android.os.CountDownTimer;
+
 public class Question_main extends AppCompatActivity {
 
     Button btn_back1;
@@ -36,6 +38,10 @@ public class Question_main extends AppCompatActivity {
     Drawable yellowDrawable;
     Drawable greenDrawable;
     Drawable redDrawable;
+
+    private CountDownTimer countDownTimer;
+    private TextView txtCountdown;
+    private final long COUNTDOWN_IN_MILLIS = 31000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +58,6 @@ public class Question_main extends AppCompatActivity {
         btn_back1 = findViewById(R.id.btn_back1);
         btn_back1.setOnClickListener(view -> finish());
 
-        // Ánh xạ các TextView
         tvQuestion = findViewById(R.id.tv_content_question);
         tvQuestionNumber = findViewById(R.id.tv_question_number);
         tvAnswer1 = findViewById(R.id.tv_answer1);
@@ -60,41 +65,40 @@ public class Question_main extends AppCompatActivity {
         tvAnswer3 = findViewById(R.id.tv_answer3);
         tvAnswer4 = findViewById(R.id.tv_answer4);
 
-        // Lấy các drawable resource
         yellowDrawable = ContextCompat.getDrawable(this, R.drawable.bg_yellow);
         blueDrawable = ContextCompat.getDrawable(this, R.drawable.txt_answer_edit);
         greenDrawable = ContextCompat.getDrawable(this, R.drawable.bg_green);
         redDrawable = ContextCompat.getDrawable(this, R.drawable.bg_red);
 
-        // Khởi tạo QuizDbHelper
         dbHelper = new QuizDbHelper(this);
 
-        // Lấy mức độ câu hỏi từ Intent
-        difficultyLevel = getIntent().getIntExtra("DIFFICULTY_LEVEL", 1);  // Mặc định là mức độ dễ
+        // Nhận mức độ khó từ Score
+        difficultyLevel = getIntent().getIntExtra("DIFFICULTY_LEVEL", 1);
 
-        // Lấy câu hỏi theo mức độ từ cơ sở dữ liệu
-        questionList = dbHelper.getQuestionsByLevel(difficultyLevel);
+        // Tải câu hỏi ngẫu nhiên dựa trên mức độ
+        questionList = dbHelper.getRandomQuestionsByLevel(difficultyLevel);
 
-        // Hiển thị câu hỏi đầu tiên
         if (!questionList.isEmpty()) {
             loadQuestion(currentQuestion);
         } else {
             Toast.makeText(this, "Không có câu hỏi cho mức độ này!", Toast.LENGTH_SHORT).show();
         }
 
-        // Gán sự kiện khi người dùng chọn đáp án
         tvAnswer1.setOnClickListener(view -> checkAnswer(0, tvAnswer1));
         tvAnswer2.setOnClickListener(view -> checkAnswer(1, tvAnswer2));
         tvAnswer3.setOnClickListener(view -> checkAnswer(2, tvAnswer3));
         tvAnswer4.setOnClickListener(view -> checkAnswer(3, tvAnswer4));
+
+        txtCountdown = findViewById(R.id.txt_countdown);
+
+        // Bắt đầu đồng hồ đếm ngược
+        startCountdownTimer();
     }
 
     @SuppressLint("SetTextI18n")
     private void loadQuestion(int questionIndex) {
-        // Lấy câu hỏi hiện tại từ danh sách câu hỏi
         Question current = questionList.get(questionIndex);
 
-        // Cập nhật câu hỏi và đáp án
         tvQuestion.setText(current.getQuestion());
         tvQuestionNumber.setText("Câu hỏi " + (questionIndex + 1));
         tvAnswer1.setText(current.getOption1());
@@ -102,14 +106,65 @@ public class Question_main extends AppCompatActivity {
         tvAnswer3.setText(current.getOption3());
         tvAnswer4.setText(current.getOption4());
 
-        // Đặt nền cho các đáp án
         tvAnswer1.setBackground(blueDrawable);
         tvAnswer2.setBackground(blueDrawable);
         tvAnswer3.setBackground(blueDrawable);
         tvAnswer4.setBackground(blueDrawable);
+
+        // Đặt lại và khởi động lại đồng hồ đếm ngược cho câu hỏi mới
+        resetCountdownTimer();
+    }
+
+    private final Handler handler = new Handler();
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+            countDownTimer = null; // Đảm bảo không giữ tham chiếu cũ
+        }
+        handler.removeCallbacksAndMessages(null); // Xóa tất cả các callback và tin nhắn
+    }
+
+    private void resetCountdownTimer() {
+        // Hủy đồng hồ đếm ngược hiện có
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+
+        // Bắt đầu đồng hồ đếm ngược mới
+        startCountdownTimer();
+    }
+
+    private void startCountdownTimer() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+        countDownTimer = new CountDownTimer(COUNTDOWN_IN_MILLIS, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                int seconds = (int) (millisUntilFinished / 1000);
+                seconds = seconds % 60;
+                @SuppressLint("DefaultLocale") String timeLeft = String.format("%02d", seconds);
+                txtCountdown.setText(timeLeft);
+            }
+
+            @Override
+            public void onFinish() {
+                Toast.makeText(Question_main.this, "Time's up!", Toast.LENGTH_SHORT).show();
+                navigateToScore();
+                finish();
+            }
+        }.start();
     }
 
     private void checkAnswer(int selectedAnswerIndex, TextView selectedAnswer) {
+        // Hủy đồng hồ đếm ngược nếu câu trả lời được chọn
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+
         // Lấy câu trả lời đúng từ câu hỏi hiện tại
         int correctAnswerIndex = questionList.get(currentQuestion).getAnswerNr() - 1;  // Chỉ số bắt đầu từ 0
 
@@ -130,8 +185,9 @@ public class Question_main extends AppCompatActivity {
 
             if (isCorrect) {
                 // Đáp án đúng
-                selectedAnswer.setBackground(greenDrawable);  // Đổi màu thành xanh nếu đúng
-                score++;  // Tăng điểm số
+                // Đổi màu thành xanh nếu đúng
+                selectedAnswer.setBackground(greenDrawable);
+                score++;
 
                 // Hiển thị đáp án đúng bằng cách đổi màu nền của đáp án đúng thành màu xanh
                 for (int i = 0; i < allAnswers.length; i++) {
@@ -181,7 +237,7 @@ public class Question_main extends AppCompatActivity {
         tvAnswer4.setEnabled(true);
     }
 
-    // Chuyển sang màn hình Score (Final Score Activity)
+    // Chuyển sang màn hình Final_Score
     private void navigateToScore() {
         Intent intent = new Intent(Question_main.this, final_Score.class);
         intent.putExtra("SCORE", score);

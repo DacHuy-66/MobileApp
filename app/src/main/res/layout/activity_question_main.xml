@@ -32,7 +32,6 @@
             app:layout_constraintVertical_bias="0.5" />
 
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
@@ -49,27 +48,29 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.054"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
     <RelativeLayout
         android:id="@+id/relativeLayout"
-        android:layout_width="412dp"
-        android:layout_height="239dp"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
         android:layout_centerHorizontal="true"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.237"
+        app:layout_constraintVertical_bias="0.188"
         tools:ignore="VisualLintBounds">
 
 
         <TextView
             android:id="@+id/tv_content_question"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="350dp"
+            android:layout_marginTop="20dp"
             android:background="#001233"
             android:gravity="center"
-            android:layout_marginTop="20dp"
             android:paddingTop="40dp"
             android:paddingBottom="40dp"
             android:textColor="#EDEDED"
@@ -80,16 +81,61 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/txt_edit"
-            android:text="@string/_00_00"
             android:gravity="center"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:layout_marginBottom="20dp"
+            android:text="@string/_00_00"
             android:textColor="#FFEB3B"
             android:textSize="20sp" />
 
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_help2"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="-20dp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/txt_help_edit"
+        app:drawableTopCompat="@drawable/baseline_lightbulb_24"
+        app:layout_constraintBottom_toTopOf="@+id/tv_answer1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+        app:layout_constraintVertical_bias="0.023" />
+
+    <TextView
+        android:id="@+id/tv_help1"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="-20dp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/txt_help_edit"
+        app:drawableTopCompat="@drawable/baseline_percent_24"
+        app:layout_constraintBottom_toTopOf="@+id/tv_answer1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.114"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+        app:layout_constraintVertical_bias="0.023" />
+
+    <TextView
+        android:id="@+id/tv_help3"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="-20dp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/txt_help_edit"
+        app:drawableTopCompat="@drawable/baseline_next_plan_24"
+        app:layout_constraintBottom_toTopOf="@+id/tv_answer1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+        app:layout_constraintVertical_bias="0.023" />
 
     <EditText
         android:id="@+id/editTextTextMultiLine"
@@ -172,8 +218,8 @@
         android:layout_height="50dp"
         android:background="@drawable/txt_answer_edit"
         android:gravity="center"
-        android:textSize="24sp"
         android:textColor="#FFFFFF"
+        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/tv_answer4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

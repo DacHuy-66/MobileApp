@@ -13,5 +13,11 @@
     <string name="batdau">Bắt Đầu</string>
     <string name="batdausau">Bắt đầu sau:</string>
     <string name="_00_00">00:00</string>
+    <string name="d_ng_bi_t_p_n_c_a_c_u_h_i_y">Dùng để biết đáp án của câu hỏi đấy.</string>
+    <string name="d_ng_lo_i_b_2_p_n_sai">Dùng để loại bỏ 2 đáp án sai.</string>
+    <string name="d_ng_b_qua_c_u_h_i_kh_c">Dùng để bỏ qua câu hỏi khác.</string>
+    <string name="_2_s_d_ng_quy_n_tr_gi_p_c_c_quy_n_tr_gi_p_ng_i_ch_i_c_th_s_d_ng">2. Sử dụng quyền trợ giúp: Các quyền trợ giúp người chơi có thể sử dụng:</string>
+    <string name="_1_tr_l_i_c_u_h_i_tr_l_i_cho_m_i_c_u_h_i_h_y_ch_n_p_n_a_b_c_ho_c_d">1. Trả lời câu hỏi: Để trả lời cho mỗi câu hỏi hãy chọn đáp án A, B, C hoặc D.</string>
+    <string name="h_ng_d_n">HƯỚNG DẪN</string>
 
 </resources>

@@ -28,7 +28,7 @@
         android:layout_width="189dp"
         android:layout_height="38dp"
         android:layout_marginTop="70dp"
-        android:text="HƯỚNG DẪN"
+        android:text="@string/h_ng_d_n"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="30sp"
@@ -36,7 +36,8 @@
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TextSizeCheck" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -49,14 +50,15 @@
         app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.219">
+        app:layout_constraintVertical_bias="0.219"
+        tools:ignore="TextSizeCheck">
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="1. Trả lời câu hỏi: Để trả lời cho mỗi câu hỏi hãy chọn đáp án A, B, C hoặc D. "
+            android:text="@string/_1_tr_l_i_c_u_h_i_tr_l_i_cho_m_i_c_u_h_i_h_y_ch_n_p_n_a_b_c_ho_c_d"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
             tools:layout_editor_absoluteX="9dp"
@@ -67,15 +69,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="2. Sử dụng quyền trợ giúp: Các quyền trợ giúp người chơi có thể sử dụng:"
+            android:text="@string/_2_s_d_ng_quy_n_tr_gi_p_c_c_quy_n_tr_gi_p_ng_i_ch_i_c_th_s_d_ng"
             android:textColor="#FFFFFF"
             android:textSize="20sp" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/tv_help1"
-        android:layout_width="50dp"
-        android:layout_height="30dp"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
         android:background="@drawable/txt_help_edit"
         app:drawableTopCompat="@drawable/baseline_percent_24"
         app:layout_constraintBottom_toTopOf="@+id/tv_help4"
@@ -87,8 +89,8 @@
 
     <TextView
         android:id="@+id/tv_help2"
-        android:layout_width="50dp"
-        android:layout_height="30dp"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
         android:background="@drawable/txt_help_edit"
         app:drawableTopCompat="@drawable/baseline_next_plan_24"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -102,7 +104,7 @@
         android:id="@+id/textView7"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Dùng để biết đáp án của câu hỏi đấy."
+        android:text="@string/d_ng_bi_t_p_n_c_a_c_u_h_i_y"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/textView8"
@@ -110,13 +112,14 @@
         app:layout_constraintHorizontal_bias="0.71"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintVertical_bias="0.5"
+        tools:ignore="TextSizeCheck" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Dùng để loại bỏ 2 đáp án sai."
+        android:text="@string/d_ng_lo_i_b_2_p_n_sai"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/textView7"
@@ -124,13 +127,14 @@
         app:layout_constraintHorizontal_bias="0.71"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintVertical_bias="0.5"
+        tools:ignore="TextSizeCheck" />
 
     <TextView
         android:id="@+id/textView8"
         android:layout_width="300dp"
         android:layout_height="40dp"
-        android:text="Dùng để bỏ qua câu hỏi khác."
+        android:text="@string/d_ng_b_qua_c_u_h_i_kh_c"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -138,12 +142,13 @@
         app:layout_constraintHorizontal_bias="0.71"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintVertical_bias="0.5"
+        tools:ignore="TextSizeCheck,TextSizeCheck" />
 
     <TextView
         android:id="@+id/tv_help4"
-        android:layout_width="50dp"
-        android:layout_height="30dp"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
         android:background="@drawable/txt_help_edit"
         app:drawableTopCompat="@drawable/baseline_lightbulb_24"
         app:layout_constraintBottom_toTopOf="@+id/tv_help2"

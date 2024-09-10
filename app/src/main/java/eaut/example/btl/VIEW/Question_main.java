@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +29,7 @@ public class Question_main extends AppCompatActivity {
 
     Button btn_back1;
     TextView tvQuestionNumber, tvQuestion, tvAnswer1, tvAnswer2, tvAnswer3, tvAnswer4;
+    TextView tvHelp1, tvHelp2, tvHelp3;  // Các nút trợ giúp
     int currentQuestion = 0;
     int score = 0;
     List<Question> questionList;
@@ -93,6 +95,16 @@ public class Question_main extends AppCompatActivity {
 
         // Bắt đầu đồng hồ đếm ngược
         startCountdownTimer();
+
+        // Khai báo các TextView cho nút trợ giúp
+        tvHelp1 = findViewById(R.id.tv_help1);
+        tvHelp2 = findViewById(R.id.tv_help2);
+        tvHelp3 = findViewById(R.id.tv_help3);
+
+        // Gán sự kiện click cho các nút trợ giúp
+        tvHelp1.setOnClickListener(v -> applyFiftyFifty());
+        tvHelp2.setOnClickListener(v -> applyCorrectAnswer());
+        tvHelp3.setOnClickListener(v -> applySkipQuestion());
     }
 
     @SuppressLint("SetTextI18n")
@@ -110,6 +122,12 @@ public class Question_main extends AppCompatActivity {
         tvAnswer2.setBackground(blueDrawable);
         tvAnswer3.setBackground(blueDrawable);
         tvAnswer4.setBackground(blueDrawable);
+
+        // Đảm bảo các đáp án được hiển thị đầy đủ
+        tvAnswer1.setVisibility(View.VISIBLE);
+        tvAnswer2.setVisibility(View.VISIBLE);
+        tvAnswer3.setVisibility(View.VISIBLE);
+        tvAnswer4.setVisibility(View.VISIBLE);
 
         // Đặt lại và khởi động lại đồng hồ đếm ngược cho câu hỏi mới
         resetCountdownTimer();
@@ -229,7 +247,6 @@ public class Question_main extends AppCompatActivity {
         }, 1000);  // Trì hoãn 1 giây trước khi kiểm tra đáp án
     }
 
-    // Phương thức kích hoạt lại sự kiện click cho các đáp án
     private void enableAnswerClick() {
         tvAnswer1.setEnabled(true);
         tvAnswer2.setEnabled(true);
@@ -237,12 +254,63 @@ public class Question_main extends AppCompatActivity {
         tvAnswer4.setEnabled(true);
     }
 
-    // Chuyển sang màn hình Final_Score
     private void navigateToScore() {
         Intent intent = new Intent(Question_main.this, final_Score.class);
         intent.putExtra("SCORE", score);
         intent.putExtra("TOTAL_QUESTIONS", questionList.size());
         startActivity(intent);
         finish();
+    }
+
+    // Phương thức để áp dụng chức năng "Hiển thị đáp án đúng"
+    private void applyCorrectAnswer() {
+        // Lấy câu trả lời đúng từ câu hỏi hiện tại
+        int correctAnswerIndex = questionList.get(currentQuestion).getAnswerNr() - 1;
+
+        // Hiển thị đáp án đúng bằng cách đổi màu nền của đáp án đúng thành màu xanh
+        TextView[] allAnswers = {tvAnswer1, tvAnswer2, tvAnswer3, tvAnswer4};
+        for (int i = 0; i < allAnswers.length; i++) {
+            if (i == correctAnswerIndex) {
+                allAnswers[i].setBackground(greenDrawable);
+            }
+        }
+
+        // Vô hiệu hóa sự kiện click cho tất cả các đáp án
+        tvAnswer1.setEnabled(false);
+        tvAnswer2.setEnabled(false);
+        tvAnswer3.setEnabled(false);
+        tvAnswer4.setEnabled(false);
+    }
+
+    // Phương thức để áp dụng chức năng "Loại bỏ 2 phương án sai"
+    private void applyFiftyFifty() {
+        // Lấy câu trả lời đúng từ câu hỏi hiện tại
+        int correctAnswerIndex = questionList.get(currentQuestion).getAnswerNr() - 1;
+
+        // Chọn ngẫu nhiên 2 phương án sai để ẩn
+        TextView[] allAnswers = {tvAnswer1, tvAnswer2, tvAnswer3, tvAnswer4};
+        int[] indices = {0, 1, 2, 3};
+        java.util.Collections.shuffle(java.util.Arrays.asList(indices));
+        int hiddenCount = 0;
+        for (int i = 0; i < indices.length; i++) {
+            if (indices[i] != correctAnswerIndex && hiddenCount < 2) {
+                allAnswers[indices[i]].setVisibility(View.INVISIBLE);
+                hiddenCount++;
+            }
+        }
+    }
+
+    // Phương thức để áp dụng chức năng "Bỏ qua câu hỏi"
+    private void applySkipQuestion() {
+        // Chuyển sang câu hỏi tiếp theo nếu có
+        if (currentQuestion < questionList.size() - 1) {
+            currentQuestion++;
+            loadQuestion(currentQuestion);
+            // Kích hoạt lại sự kiện click cho các đáp án
+            enableAnswerClick();
+        } else {
+            // Chuyển sang màn hình Score
+            navigateToScore();
+        }
     }
 }

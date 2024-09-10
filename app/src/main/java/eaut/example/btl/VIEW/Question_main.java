@@ -16,6 +16,10 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 
 import java.util.List;
 
@@ -111,7 +115,7 @@ public class Question_main extends AppCompatActivity {
             if (!helpFiftyFiftyUsed) {
                 applyFiftyFifty();
                 helpFiftyFiftyUsed = true;
-                tvHelp1.setEnabled(false);  // Vô hiệu hóa nút trợ giúp sau khi sử dụng
+                LamMo(tvHelp1);  // Làm mờ nút trợ giúp sau khi sử dụng
             }
         });
 
@@ -119,7 +123,7 @@ public class Question_main extends AppCompatActivity {
             if (!helpCorrectAnswerUsed) {
                 applyCorrectAnswer();
                 helpCorrectAnswerUsed = true;
-                tvHelp2.setEnabled(false);  // Vô hiệu hóa nút trợ giúp sau khi sử dụng
+                LamMo(tvHelp2);
             }
         });
 
@@ -127,7 +131,7 @@ public class Question_main extends AppCompatActivity {
             if (!helpSkipQuestionUsed) {
                 applySkipQuestion();
                 helpSkipQuestionUsed = true;
-                tvHelp3.setEnabled(false);  // Vô hiệu hóa nút trợ giúp sau khi sử dụng
+                LamMo(tvHelp3);
             }
         });
     }
@@ -165,9 +169,9 @@ public class Question_main extends AppCompatActivity {
         super.onDestroy();
         if (countDownTimer != null) {
             countDownTimer.cancel();
-            countDownTimer = null; // Đảm bảo không giữ tham chiếu cũ
+            countDownTimer = null;
         }
-        handler.removeCallbacksAndMessages(null); // Xóa tất cả các callback và tin nhắn
+        handler.removeCallbacksAndMessages(null);
     }
 
     private void resetCountdownTimer() {
@@ -289,25 +293,42 @@ public class Question_main extends AppCompatActivity {
         finish();
     }
 
+
     // Phương thức để áp dụng chức năng "Hiển thị đáp án đúng"
     private void applyCorrectAnswer() {
         // Lấy câu trả lời đúng từ câu hỏi hiện tại
         int correctAnswerIndex = questionList.get(currentQuestion).getAnswerNr() - 1;
 
-        // Hiển thị đáp án đúng bằng cách đổi màu nền của đáp án đúng thành màu xanh
+        // Tạo chuỗi để hiển thị đáp án đúng
+        String correctAnswerText = "";
         TextView[] allAnswers = {tvAnswer1, tvAnswer2, tvAnswer3, tvAnswer4};
         for (int i = 0; i < allAnswers.length; i++) {
             if (i == correctAnswerIndex) {
-                allAnswers[i].setBackground(greenDrawable);
+                correctAnswerText = allAnswers[i].getText().toString();
+                break;
             }
         }
 
-        // Vô hiệu hóa sự kiện click cho tất cả các đáp án
-        tvAnswer1.setEnabled(false);
-        tvAnswer2.setEnabled(false);
-        tvAnswer3.setEnabled(false);
-        tvAnswer4.setEnabled(false);
+        // Tạo và hiển thị hộp thoại thông báo với layout tùy chỉnh
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_correct_answer, null);
+        TextView messageTextView = dialogView.findViewById(R.id.dialog_message);
+        Button okButton = dialogView.findViewById(R.id.button_ok);
+
+        messageTextView.setText("Đáp án đúng là: " + correctAnswerText);
+
+        builder.setView(dialogView);
+        AlertDialog dialog = builder.create();
+
+        okButton.setOnClickListener(v -> {
+            dialog.dismiss();
+            // Kích hoạt lại sự kiện click cho tất cả các đáp án sau khi hộp thoại bị đóng
+            enableAnswerClick();
+        });
+
+        dialog.show();
     }
+
 
     // Phương thức để áp dụng chức năng "Loại bỏ 2 phương án sai"
     private void applyFiftyFifty() {
@@ -339,5 +360,11 @@ public class Question_main extends AppCompatActivity {
             // Chuyển sang màn hình Score
             navigateToScore();
         }
+    }
+
+    // Phương thức để làm mờ các nút trợ giúp sau khi sử dụng
+    private void LamMo(TextView helpButton) {
+        helpButton.setAlpha(0.5f);  // Đặt độ mờ của nút trợ giúp xuống 50%
+        helpButton.setClickable(false);  // Vô hiệu hóa khả năng click của nút
     }
 }

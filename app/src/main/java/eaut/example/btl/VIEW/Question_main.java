@@ -45,6 +45,11 @@ public class Question_main extends AppCompatActivity {
     private TextView txtCountdown;
     private final long COUNTDOWN_IN_MILLIS = 31000;
 
+    // Thay đổi trạng thái trợ giúp
+    private boolean helpFiftyFiftyUsed = false;
+    private boolean helpCorrectAnswerUsed = false;
+    private boolean helpSkipQuestionUsed = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,9 +107,29 @@ public class Question_main extends AppCompatActivity {
         tvHelp3 = findViewById(R.id.tv_help3);
 
         // Gán sự kiện click cho các nút trợ giúp
-        tvHelp1.setOnClickListener(v -> applyFiftyFifty());
-        tvHelp2.setOnClickListener(v -> applyCorrectAnswer());
-        tvHelp3.setOnClickListener(v -> applySkipQuestion());
+        tvHelp1.setOnClickListener(v -> {
+            if (!helpFiftyFiftyUsed) {
+                applyFiftyFifty();
+                helpFiftyFiftyUsed = true;
+                tvHelp1.setEnabled(false);  // Vô hiệu hóa nút trợ giúp sau khi sử dụng
+            }
+        });
+
+        tvHelp2.setOnClickListener(v -> {
+            if (!helpCorrectAnswerUsed) {
+                applyCorrectAnswer();
+                helpCorrectAnswerUsed = true;
+                tvHelp2.setEnabled(false);  // Vô hiệu hóa nút trợ giúp sau khi sử dụng
+            }
+        });
+
+        tvHelp3.setOnClickListener(v -> {
+            if (!helpSkipQuestionUsed) {
+                applySkipQuestion();
+                helpSkipQuestionUsed = true;
+                tvHelp3.setEnabled(false);  // Vô hiệu hóa nút trợ giúp sau khi sử dụng
+            }
+        });
     }
 
     @SuppressLint("SetTextI18n")
@@ -247,6 +272,7 @@ public class Question_main extends AppCompatActivity {
         }, 1000);  // Trì hoãn 1 giây trước khi kiểm tra đáp án
     }
 
+    // Phương thức kích hoạt lại sự kiện click cho các đáp án
     private void enableAnswerClick() {
         tvAnswer1.setEnabled(true);
         tvAnswer2.setEnabled(true);
@@ -254,6 +280,7 @@ public class Question_main extends AppCompatActivity {
         tvAnswer4.setEnabled(true);
     }
 
+    // Chuyển sang màn hình Final_Score
     private void navigateToScore() {
         Intent intent = new Intent(Question_main.this, final_Score.class);
         intent.putExtra("SCORE", score);

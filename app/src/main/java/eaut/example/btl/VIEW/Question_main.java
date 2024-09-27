@@ -67,7 +67,37 @@ public class Question_main extends AppCompatActivity {
         });
 
         btn_back1 = findViewById(R.id.btn_back1);
-        btn_back1.setOnClickListener(view -> finish());
+        btn_back1.setOnClickListener(view -> {
+            // Tạo một AlertDialog Builder
+            AlertDialog.Builder builder = new AlertDialog.Builder(Question_main.this);
+
+            // Sử dụng LayoutInflater để tải layout tuỳ chỉnh
+            View dialogView = getLayoutInflater().inflate(R.layout.dialog_out, null);
+
+            // Liên kết các thành phần giao diện trong dialog
+            TextView messageTextView = dialogView.findViewById(R.id.dialog_message);
+            Button okButton = dialogView.findViewById(R.id.button_ok);
+            Button cancelButton = dialogView.findViewById(R.id.button_cancel);
+
+            // Thiết lập thông điệp cho TextView
+            messageTextView.setText("Bạn có chắc chắn muốn thoát không?");
+
+            // Đặt view tuỳ chỉnh cho AlertDialog
+            builder.setView(dialogView);
+            AlertDialog dialog = builder.create();
+
+            // Xử lý sự kiện khi nút "Có" được nhấn
+            okButton.setOnClickListener(v -> {
+                dialog.dismiss();
+                finish();
+            });
+
+            // Xử lý sự kiện khi nút "Không" được nhấn
+            cancelButton.setOnClickListener(v -> dialog.dismiss());
+
+            // Hiển thị hộp thoại
+            dialog.show();
+        });
 
         tvQuestion = findViewById(R.id.tv_content_question);
         tvQuestionNumber = findViewById(R.id.tv_question_number);
